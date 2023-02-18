@@ -25,13 +25,4 @@ public class UserController {
 
         return ResponseEntity.ok(dto);
     }
-
-    @PostMapping("/signup")
-    @Transactional
-    public ResponseEntity<UserDetailingDTO> signUp(@RequestBody @Valid UserSignUpDTO data, UriComponentsBuilder uriBuilder) {
-        UserDetailingDTO dto = service.signUp(data);
-        URI uri = uriBuilder.path("/signup/{id}").buildAndExpand(dto.id()).toUri();
-
-        return ResponseEntity.created(uri).body(dto);
-    }
 }
