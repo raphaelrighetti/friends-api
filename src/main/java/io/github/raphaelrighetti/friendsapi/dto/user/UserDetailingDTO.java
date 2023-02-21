@@ -6,10 +6,11 @@ public record UserDetailingDTO(
         Long id,
         String name,
         Integer age,
-        String email
+        String email,
+        Boolean active
 ) {
 
     public UserDetailingDTO(User user) {
-        this(user.getId(), user.getName(), user.getAge(), user.getEmail());
+        this(user.getId(), user.getName(), user.getAge(), user.getEmail(), user.getActive());
     }
 }

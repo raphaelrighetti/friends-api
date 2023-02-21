@@ -1,6 +1,7 @@
 package io.github.raphaelrighetti.friendsapi.entity.user;
 
 import io.github.raphaelrighetti.friendsapi.dto.user.UserSignUpDTO;
+import io.github.raphaelrighetti.friendsapi.dto.user.UserUpdateDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -29,6 +30,33 @@ public class User implements UserDetails {
     private Integer age;
     private String email;
     private String password;
+    private Boolean active = true;
+
+    public User(UserSignUpDTO data) {
+        name = data.name();
+        age = data.age();
+        email = data.email();
+        password = encodePassword(data.password());
+    }
+
+    public void updateFields(UserUpdateDTO data) {
+        if (data.name() != null) name = data.name();
+        if (data.age() != null) age = data.age();
+        if (data.email() != null) email = data.email();
+        if (data.password() != null) password = encodePassword(data.password());
+    }
+
+    public void activate() {
+        active = true;
+    }
+
+    public void inactivate() {
+        active = false;
+    }
+
+    private String encodePassword(String password) {
+        return new BCryptPasswordEncoder(10).encode(password);
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -63,12 +91,5 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    public User(UserSignUpDTO data) {
-        name = data.name();
-        age = data.age();
-        email = data.email();
-        password = new BCryptPasswordEncoder(10).encode(data.password());
     }
 }

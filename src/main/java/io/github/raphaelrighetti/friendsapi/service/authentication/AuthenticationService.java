@@ -1,4 +1,4 @@
-package io.github.raphaelrighetti.friendsapi.service.user;
+package io.github.raphaelrighetti.friendsapi.service.authentication;
 
 import io.github.raphaelrighetti.friendsapi.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
