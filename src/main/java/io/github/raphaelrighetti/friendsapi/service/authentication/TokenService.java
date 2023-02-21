@@ -3,6 +3,7 @@ package io.github.raphaelrighetti.friendsapi.service.authentication;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import io.github.raphaelrighetti.friendsapi.entity.user.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,19 @@ public class TokenService {
                     .sign(algorithm);
         } catch (JWTCreationException e) {
             throw new RuntimeException("Failed to generate JWT token");
+        }
+    }
+
+    public String getSubject(String JWTToken) {
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(secret);
+            return JWT.require(algorithm)
+                    .withIssuer("Friends API")
+                    .build()
+                    .verify(JWTToken)
+                    .getSubject();
+        } catch (JWTVerificationException e) {
+            throw new RuntimeException("Invalid or expired JWT");
         }
     }
 
